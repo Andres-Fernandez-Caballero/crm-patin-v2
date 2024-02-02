@@ -19,8 +19,11 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    
+
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('names')
@@ -35,6 +38,12 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->required(),
+                    Forms\Components\Select::make('topics')
+                    ->label('Disciplinas')
+                    ->preload()
+                    ->multiple()
+                    ->relationship('topics', 'name')
+                    ,
                 Forms\Components\DatePicker::make('birth_date')
                     ->label('Fecha de nacimiento')
                     ->required(),
@@ -58,6 +67,11 @@ class StudentResource extends Resource
                     ->label('DNI')
                     ->searchable()
                     ->sortable(),
+
+                    Tables\Columns\TextColumn::make('topics.name')
+                    ->badge()
+                    ->label('Disciplinas')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->sortable(),

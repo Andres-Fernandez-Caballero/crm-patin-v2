@@ -18,6 +18,13 @@ return new class extends Migration
             $table->double('price', 8, 2);
             $table->timestamps();
         });
+
+        Schema::create('topicables', function (Blueprint $table) {
+            $table->integer('topic_id');
+            $table->integer('topicable_id');
+            $table->string('topicable_type');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -26,5 +33,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('topics');
+        Schema::dropIfExists('topicables');
     }
 };

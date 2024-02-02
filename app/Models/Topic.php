@@ -9,5 +9,15 @@ class Topic extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['name', 'image', 'price'];
+
+    public function tickets()
+    {
+        return $this->morphedByMany(Ticket::class, 'topicable');
+    }
+
+    public function students()
+    {
+        return $this->morphedByMany(Student::class, 'topicable');
+    }
 }

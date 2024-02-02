@@ -21,10 +21,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            TopicSeeder::class,
             //StudentSeeder::class,
         ]);
 
-        Student::factory(10)->create();
+        Student::factory(10)
+            ->create()
+            ->each(function ($student) {
+                $student->topics()->attach([1, 2, 3]);
+        });
 
         // User::factory(1)->create();
 
