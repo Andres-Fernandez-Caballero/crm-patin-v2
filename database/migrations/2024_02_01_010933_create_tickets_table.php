@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_expired')->default(false);
             $table->boolean('is_paid')->default(false);
             $table->timestamps();
+            
         });
 
         Schema::create('ticket_topic', function (Blueprint $table) {

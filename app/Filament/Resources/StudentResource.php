@@ -17,7 +17,7 @@ class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     
 
@@ -80,15 +80,23 @@ class StudentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
+                
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->label('Eliminar patinador') // Cambiar la etiqueta de la acción de eliminación
+                    ->successNotificationTitle('Usuario eliminado correctamente')
+                    ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+                    ->modalHeading('Eliminar patinador')
+                    ->modalCancelActionLabel('Cancelar')
+                    ->modalSubmitActionLabel('Si, eliminar')    
+                ])->label('Acciones') // Cambiar la etiqueta del grupo de acciones
             ]);
     }
 

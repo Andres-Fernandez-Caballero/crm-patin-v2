@@ -18,7 +18,7 @@ class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     public static function form(Form $form): Form
     {
@@ -27,22 +27,22 @@ class TicketResource extends Resource
                 //
             ]);
     }
-
+  
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('student.names')
-                    ->label('Student'),
+                    ->label('Nombre'),
                 Tables\Columns\TextColumn::make('student.last_name')
-                    ->label('Last Name'),
+                    ->label('Apellido'),
                 Tables\Columns\TextColumn::make('period_start')
-                    ->label('Period Start'),
+                    ->label('Cuota'),
                 Tables\Columns\ToggleColumn::make('is_paid')
-                    ->label('Is Paid'),
+                    ->label('¿Pagó?'),
                 Tables\Columns\TextColumn::make('topics.name')
                     ->badge()
-                    ->label('Topics'),
+                    ->label('Disciplinas'),
 
             ])
             ->filters([
@@ -59,15 +59,21 @@ class TicketResource extends Resource
                     ),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->label('Eliminar cuota') // Cambiar la etiqueta de la acción de eliminación
+                    ->successNotificationTitle('Cuota eliminada correctamente')
+                    ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+                    ->modalHeading('Eliminar cuota')
+                    ->modalCancelActionLabel('Cancelar')
+                    ->modalSubmitActionLabel('Si, eliminar')    
+                ])->label('Acciones') // Cambiar la etiqueta del grupo de acciones
             ]);
     }
-
+ 
     public static function getRelations(): array
     {
         return [

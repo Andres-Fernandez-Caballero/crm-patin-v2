@@ -13,7 +13,12 @@ class EditTicket extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->successNotificationTitle('Cuota eliminada correctamente')
+            ->modalHeading('Eliminar cuota')
+            ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+            ->modalSubmitActionLabel('Si, eliminar')
+            ->modalCancelActionLabel('Cancelar')
         ];
     }
 }
