@@ -30,7 +30,7 @@ class CreateBillingPeriod extends Command
         Student::chunk(200, function ($students) {
             foreach ($students as $student) {
                 $ticketAux = Ticket::create([
-                    'period_start' => now()->format('Y-m-02'),
+                    'period_start' => now()->format('Y-m-01'),
                     'student_id' => $student->id,
                 ]);
 

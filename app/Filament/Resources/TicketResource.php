@@ -6,10 +6,12 @@ use App\Filament\Resources\TicketResource\Pages;
 use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Ticket;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +21,7 @@ class TicketResource extends Resource
     protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?string $navigationGroup = 'Facturacion';
 
     public static function form(Form $form): Form
     {
@@ -37,6 +40,7 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('student.last_name')
                     ->label('Apellido'),
                 Tables\Columns\TextColumn::make('period_start')
+                ->searchable()
                     ->label('Cuota'),
                 Tables\Columns\ToggleColumn::make('is_paid')
                     ->label('¿Pagó?'),
@@ -57,6 +61,18 @@ class TicketResource extends Resource
                             $query->whereMonth('period_start', now()->month);
                         }
                     ),
+                SelectFilter::make('mensual')
+                ->label('mes')
+                ->options([
+                    1 => 'Enero',
+                    2 => 'Febrero'
+                ])
+                ->native(false)
+                ->query(
+                    function(Builder $query){
+                        $query->whereMonth('period_start',2);
+                    }
+                ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
