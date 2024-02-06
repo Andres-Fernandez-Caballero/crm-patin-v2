@@ -21,6 +21,9 @@ class TicketResource extends Resource
     protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    protected static ?string $label = 'Cuotas';
+
     protected static ?string $navigationGroup = 'Facturacion';
 
     public static function form(Form $form): Form
@@ -65,7 +68,17 @@ class TicketResource extends Resource
                 ->label('mes')
                 ->options([
                     1 => 'Enero',
-                    2 => 'Febrero'
+                    2 => 'Febrero',
+                    3 => 'Marzo',
+                    4 => 'Abril',
+                    5 => 'Mayo',
+                    6 => 'Junio',
+                    7 => 'Julio',
+                    8 => 'Agosto',
+                    9 => 'Septiembre',
+                    10 => 'Octubre',
+                    11 => 'Noviembre',
+                    12 => 'Diciembre'
                 ])
                 ->native(false)
                 ->query(
@@ -74,9 +87,9 @@ class TicketResource extends Resource
                     }
                 ),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
-            ])
+            //->actions([
+              //  Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
+            //])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()

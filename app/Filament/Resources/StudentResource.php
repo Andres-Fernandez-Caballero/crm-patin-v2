@@ -19,7 +19,7 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Instituto';
+    protected static ?string $navigationGroup = 'Gestión';
 
     protected static ?string $label = 'Alumnos';
 
@@ -87,9 +87,9 @@ class StudentResource extends Resource
                 
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('Editar') // Cambiar el texto de la acción de edición
+                Tables\Actions\EditAction::make()
+                ->label('Editar') // Cambiar el texto de la acción de edición
                 
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
