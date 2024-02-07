@@ -27,11 +27,9 @@ class AdminPanelProvider extends PanelProvider
         Filament::serving(function () {
             Filament::registerNavigationGroups([
                 NavigationGroup::make()
-                     ->label('Gestión'),
-                     
+                    ->label('Gestión'),
                 NavigationGroup::make()
                     ->label('Facturación'),
-                    
                 NavigationGroup::make()
                     ->label('Estadisticas')
                     // ->icon('heroicon-s-cog')

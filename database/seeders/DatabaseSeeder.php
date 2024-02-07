@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             //StudentSeeder::class,
         ]);
 
-        Student::factory(10)
+        Student::factory(5)
             ->create()
             ->each(function ($student) {
                 $student->topics()->attach([1, 2, 3]);

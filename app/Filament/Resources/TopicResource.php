@@ -30,9 +30,6 @@ class TopicResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->label('Nombre')
                 ->required(),
-            Forms\Components\TextInput::make('image')
-                ->label('Imagen')
-                ->required(),
             Forms\Components\TextInput::make('price')
                 ->label('Precio')
                 ->required(),
@@ -47,6 +44,11 @@ class TopicResource extends Resource
                 ->label('Nombre')
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('students_count')->counts('students')
+            ->label('Cantidad de alumnos')
+            ,
+            
+            
             Tables\Columns\TextColumn::make('price')
                 ->label('Precio')
                 ->searchable()
@@ -87,5 +89,12 @@ class TopicResource extends Resource
             'create' => Pages\CreateTopic::route('/create'),
             'edit' => Pages\EditTopic::route('/{record}/edit'),
         ];
+    }
+
+    
+    //Contador en barra lateral.
+    public static function getNavigationBadge(): ?string
+    {
+        return static ::getModel()::count();
     }
 }

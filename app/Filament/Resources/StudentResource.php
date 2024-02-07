@@ -76,20 +76,22 @@ class StudentResource extends Resource
                     ->badge()
                     ->label('Disciplinas')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('birth_date')
-                    ->label('Fecha de nacimiento')  
-                    ->sortable(),
-            ])
+               // Tables\Columns\TextColumn::make('email')
+                 //   ->label('Email')
+                   // ->sortable(),
+                //Tables\Columns\TextColumn::make('birth_date')
+                  //  ->label('Fecha de nacimiento')  
+                    //->sortable(),
+            ])-> defaultSort('names', 'asc')
             ->filters([
                 
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Editar') // Cambiar el texto de la acción de edición
-                
+                ->label('Editar'), // Cambiar el texto de la acción de edición 
+                Tables\Actions\ViewAction::make()
+                ->label('Ver')
+                ->modalHeading('Detalle de alumno'), 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -104,12 +106,12 @@ class StudentResource extends Resource
             ]);
     }
 
-        public static function getRelations(): array
-        {
-            return [
-                //
-            ];
-        }
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
 
     public static function getPages(): array
     {
@@ -118,5 +120,11 @@ class StudentResource extends Resource
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    //Contador en barra lateral.
+    public static function getNavigationBadge(): ?string
+    {
+        return static ::getModel()::count();
     }
 }

@@ -12,7 +12,8 @@
         "ryannaddy.laravel-artisan",
         "onecentlin.laravel5-snippets",
         "onecentlin.laravel-blade",
-        "GitHub.copilot"
+        "GitHub.copilot",
+        "bierner.emojisense"
       ],
       "settings": {}
     }

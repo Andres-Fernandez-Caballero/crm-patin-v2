@@ -10,6 +10,11 @@ class EditTopic extends EditRecord
 {
     protected static string $resource = TopicResource::class;
     
+    protected function getCreatedNotificationTitle(): ?String
+    {   
+        return 'Disciplina editada correctamente';
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
