@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Student;
+use App\Models\Ticket;
+use App\Observers\StudentObserver;
+use App\Observers\TicketObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,7 +29,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Student::observe(StudentObserver::class);
+        Ticket::observe(TicketObserver::class);
     }
 
     /**
