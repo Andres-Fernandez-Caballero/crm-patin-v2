@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Payment;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -86,7 +87,21 @@ class StudentResource extends Resource
             ->filters([
                 
             ])
-            ->actions([
+            ->actions([Tables\Actions\Action::make('form')
+                ->label('Nuev Pago')
+                ->form([
+                    Forms\Components\TextInput::make('total_amount')->numeric(),
+                    Forms\Components\DatePicker::make('payment_date_open'),
+            
+                ])->action(function(array $data, Student $student):void {
+                    
+                    Payment::create([
+                        'total_amount' => $data['total_amount'],
+                        'payment_date_open' =>$data['payment_date_open'],
+                        'student_id' => $student->id
+                    ]);
+                }),
+           
                 Tables\Actions\EditAction::make()
                 ->label('Editar'), // Cambiar el texto de la acción de edición 
                 Tables\Actions\ViewAction::make()

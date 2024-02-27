@@ -27,4 +27,9 @@ class Student extends Model
     {
         return $this->morphToMany(Topic::class, 'topicable');
     }
+
+    public function payments():HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
