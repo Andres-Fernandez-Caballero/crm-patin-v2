@@ -29,8 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Student::observe(StudentObserver::class);
-        Ticket::observe(TicketObserver::class);
+        // add observers    
     }
 
     /**

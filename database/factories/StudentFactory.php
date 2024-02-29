@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Closure;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,6 +24,11 @@ class StudentFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             //'phone' => $this->faker->phoneNumber,
             'birth_date' => $this->faker->date(),
+            'state' => $this->faker->randomElement(['regular', 'pago pendiente', 'inactivo']),
+
         ];
     }
+
+
+    
 }

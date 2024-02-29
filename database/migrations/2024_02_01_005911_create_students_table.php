@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('dni')->unique();
             $table->string('email')->unique();
             $table->date('birth_date');
+            $table->enum('state', ['regular', 'pago pendiente', 'inactivo'])->default('pago pendiente');
 
             $table->timestamps();
         });

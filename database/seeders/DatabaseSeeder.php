@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Payment;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -17,8 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
-            
+            'email' => 'test@example.com', 
         ]);
 
         $this->call([
@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Student::factory(5)
+           ->has(Payment::factory()->count(random_int(2, 10)))
             ->create()
             ->each(function ($student) {
                 $student->topics()->attach([1, 2, 3]);

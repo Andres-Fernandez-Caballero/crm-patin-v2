@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
 
-            $table->date('payment_date_open');
+            $table->date('payment_date_open')->default(Carbon::now());
             $table->date('payment_date_paid')->nullable();
 
             $table->decimal('total_amount', 10,2);

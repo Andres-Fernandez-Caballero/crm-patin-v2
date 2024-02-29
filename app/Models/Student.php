@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['names', 'last_name', 'dni', 'email', 'birth_date'];
+    protected $fillable = ['names', 'last_name', 'dni', 'email', 'birth_date', 'state'];
 
     protected $casts = [
         'birth_date' => 'date'
@@ -28,7 +27,7 @@ class Student extends Model
         return $this->morphToMany(Topic::class, 'topicable');
     }
 
-    public function payments():HasMany
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
