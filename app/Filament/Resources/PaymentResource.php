@@ -25,7 +25,11 @@ class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    protected static ?string $label = 'Cuotas';
+
+    protected static ?string $navigationGroup = 'Facturacion';
 
     public static function formCreatePayment(): array
     {
@@ -42,7 +46,7 @@ class PaymentResource extends Resource
                     ->preload(),
                 Forms\Components\TextInput::make('total_amount')
                     ->numeric()
-                    ->label('monto a pagar')
+                    ->label('Monto a pagar')
                     //->afterStateUpdated(fn(GET $get, Set $set, ?string $old) => $get('is_expired')? $set('total_amount', $get('total_amount')* 1.5 ): $set('total_amount', $old) )
                     ->prefix('ARS$')
                     ->default(
@@ -51,7 +55,7 @@ class PaymentResource extends Resource
                     ),
 
                 Forms\Components\Toggle::make('is_expirated')
-                    ->label('pago vencido')
+                    ->label('Pago vencido')
                     ->afterStateUpdated(
                         fn (Get $get, SET $set, $state) =>
                         $state ? $set('total_amount', $get('total_amount') * 1.15)
@@ -61,11 +65,11 @@ class PaymentResource extends Resource
                     ->live(onBlur: true),
 
                 Forms\Components\DatePicker::make('payment_date_open')
-                    ->label('Fecha del mes en curso pago')
+                    ->label('Mes abonado.')
                     ->default(Carbon::now()->toISOString()),
 
                 Forms\Components\DatePicker::make('payment_date_paid')
-                    ->label('fecha de facturacion')
+                    ->label('Fecha de cobro.')
 
 
 
@@ -76,8 +80,18 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('student.names'),
+                TextColumn::make('student.last_name')
+                ->label ('Apellido')
+                ->searchable()
+                ->sortable(),
+
+                TextColumn::make('student.names')
+                ->label ('Alumno')
+                ->searchable()
+                ->sortable(),
+
                 TextColumn::make('is_paid')
+                ->label ('Estado de pago')
                     ->color(function (string $state) {
                         
                         switch ($state) {
@@ -87,7 +101,7 @@ class PaymentResource extends Resource
                                 return 'danger';
                         }
                     })
-            ])
+            ])->defaultSort('student.last_name', 'asc')
             ->filters([
                 Filter::make('pago pendiente')
                     ->query(fn (Builder $query) => $query->where('payment_date_paid', null))

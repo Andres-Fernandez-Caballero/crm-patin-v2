@@ -19,6 +19,8 @@ use Filament\Forms\Set;
 use Filament\Forms\Get;
 use Illuminate\Support\Facades\Log;
 
+use Filament\Tables\Filters\Filter;
+
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
@@ -64,12 +66,12 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('names')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('last_name')
                     ->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('names')
+                    ->label('Nombres')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dni')
@@ -78,16 +80,19 @@ class StudentResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('state')
-                ->badge()
-                ->color(function(string $state){
-                    switch ($state) {
+                    ->label('Estado de pago')
+                    ->badge()
+                    ->searchable()
+                    ->color(function (string $state) {
+                        switch ($state) {
                             case 'regular':
                                 return 'success';
                             case 'pago pendiente':
                                 return 'danger';
-                            }
+                        }
                         return 'warning';
-                }),
+                    }),
+
 
                 Tables\Columns\TextColumn::make('topics.name')
                     ->badge()
@@ -99,17 +104,29 @@ class StudentResource extends Resource
                 //Tables\Columns\TextColumn::make('birth_date')
                 //  ->label('Fecha de nacimiento')  
                 //->sortable(),
-            ])->defaultSort('names', 'asc')
-            ->filters([])
+            ])->defaultSort('last_name', 'asc')
+
+            ->filters([
+                // get students by current month
+                Filter::make('payment_date_paid')
+                    ->label('Pagos pendientes')
+                    ->toggle()
+                    ->default()
+                    ->default(true)
+                    ->query(fn (Builder $query) => $query->where('state', 'pago pendiente'))
+
+            ])
             ->actions([
                 Tables\Actions\Action::make('form')
-                    ->label('Nuev Pago')
+                    ->label('Nuevo Pago')
+
                     ->form([
+
                         Fieldset::make('Facturacion')
                             ->schema([
                                 Forms\Components\TextInput::make('total_amount')
                                     ->numeric()
-                                    ->label('monto a pagar')
+                                    ->label('Monto a pagar')
                                     //->afterStateUpdated(fn(GET $get, Set $set, ?string $old) => $get('is_expired')? $set('total_amount', $get('total_amount')* 1.5 ): $set('total_amount', $old) )
                                     ->prefix('ARS$')
                                     ->default(
@@ -118,7 +135,11 @@ class StudentResource extends Resource
                                     ),
 
                                 Forms\Components\Toggle::make('is_expirated')
-                                    ->label('pago vencido')
+                                    ->onIcon('heroicon-m-currency-dollar')
+                                    ->offIcon('heroicon-m-currency-dollar')
+                                    ->onColor('success')
+                                    ->offColor('danger')
+                                    ->label('Pago vencido')
                                     ->afterStateUpdated(
                                         fn (Get $get, SET $set, $state) =>
                                         $state ? $set('total_amount', $get('total_amount') * 1.15)
@@ -128,19 +149,20 @@ class StudentResource extends Resource
                                     ->live(onBlur: true),
                             ]),
 
-                        FieldSet::make('fecha')
+                        FieldSet::make('Fecha')
                             ->schema([
                                 Forms\Components\DatePicker::make('payment_date_open')
-                                    ->label('Fecha del mes en curso pago')
+                                    ->label('Mes abonado')
                                     ->default(Carbon::now()->toISOString()),
 
                                 Forms\Components\DatePicker::make('payment_date_paid')
-                                    ->label('fecha de facturacion')
+                                    ->label('Fecha de cobro')
 
                             ])
 
 
-                    ])->action(function (array $data, Student $student): void {
+                    ])
+                    ->action(function (array $data, Student $student): void {
 
                         Payment::create([
                             'total_amount' => $data['total_amount'],

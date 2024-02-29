@@ -13,18 +13,20 @@ class MonthlyDetailWidget extends BaseWidget
     {
         return [
             Stat::make(
-                label: 'total de pagos',
+                
+                label: 'Cuotas abonadas ',
                 value: Payment::whereMonth('payment_date_open', Carbon::parse(Carbon::now()->month()->format('Y-m')))
-                    // ->where('payment_date_paid', null)
-                    ->sum('total_amount')
-            )
+                ->where('payment_date_paid', '!=', null)
+                ->sum('total_amount')
+                )
+                ->color('warning')
 
                 ->description(
-                    'recaudado $' . Payment::whereMonth('payment_date_open', Carbon::parse(Carbon::now()->month()->format('Y-m')))
-                        ->where('payment_date_paid', '!=', null)
-                        ->sum('total_amount')
-                )
-                ->color('success')
+                    'Cuotas totales $' . Payment::whereMonth('payment_date_open', Carbon::parse(Carbon::now()->month()->format('Y-m')))
+                    // ->where('payment_date_paid', null)
+                ->sum('total_amount')
+                
+            )
         ];
     }
 }
