@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Log;
 
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Title;
 use PHPUnit\TestRunner\TestResult\Collector;
 
 class StudentResource extends Resource
@@ -85,12 +86,12 @@ class StudentResource extends Resource
                 Tables\Columns\SelectColumn::make('state')
                     ->label('Estado de pago')
                     ->options([
-                        'regular'=> 'regular',
+                        'regular' => 'regular',
                         'pago pendiente' => 'pago pendiente',
                         'inactivo' => 'inactivo',
-                        ])
+                    ])
                     ->searchable(),
-                    
+
 
                 Tables\Columns\TextColumn::make('topics.name')
                     ->badge()
@@ -117,7 +118,8 @@ class StudentResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('form')
                     ->label('Nuevo Pago')
-                    ->hidden(fn(Student $student) => $student->state != 'pago pendiente')
+                    ->hidden(fn (Student $student) => $student->state != 'pago pendiente')
+                    ->modalDescription(fn (Student $student) => 'Cuota de ' . $student->names . ' ' . $student->last_name)
                     ->form([
 
                         Fieldset::make('Facturacion')
@@ -178,11 +180,15 @@ class StudentResource extends Resource
                     ->modalHeading('Detalle de alumno'),
             ])
             ->bulkActions([
-                
+
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('setInactive')
-                    ->label('poner inactivos')
-                    ->action(fn(Collection $students)=> $students->each(fn(Student $student) => $student->update(['state' => 'inactivo']))),
+                        ->label('establecer pagos inativos')
+                        ->color('warning')
+                        
+                        ->action(
+                            fn (Collection $students) => $students->where('state', '!=', 'inactivo')->each(fn (Student $student) => $student->update(['state' => 'pago pendiente']))
+                        ),
                     Tables\Actions\DeleteBulkAction::make()
                         ->label('Eliminar patinador') // Cambiar la etiqueta de la acción de eliminación
                         ->successNotificationTitle('Usuario eliminado correctamente')
