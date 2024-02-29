@@ -183,7 +183,7 @@ class StudentResource extends Resource
 
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('setInactive')
-                        ->label('establecer pagos inativos')
+                        ->label('Establecer pagos pendientes')
                         ->color('warning')
                         
                         ->action(

@@ -91,9 +91,19 @@ class PaymentResource extends Resource
                 ->sortable(),
 
                 TextColumn::make('total_amount')
-                ->prefix('ARS $')
+                ->prefix('ARS $'),
+
+
+                TextColumn::make('payment_date_open')
+                    ->label('Mes abonado.')
+                    ->dateTime('m-Y')
+                    ->searchable()
+                    ->sortable()
+                    
                     
             ])->defaultSort('student.last_name', 'asc')
+
+            
             ->filters([
                 Filter::make('pago pendiente')
                     ->query(fn (Builder $query) => $query->where('payment_date_paid', null))
