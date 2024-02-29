@@ -3,21 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentResource\Pages;
-use App\Filament\Resources\PaymentResource\RelationManagers;
 use App\Models\Payment;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\Fieldset;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Forms\Set;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Log;
 
@@ -70,6 +69,7 @@ class PaymentResource extends Resource
 
                 Forms\Components\DatePicker::make('payment_date_paid')
                     ->label('Fecha de cobro.')
+                    ->required(),
 
 
 
@@ -90,24 +90,16 @@ class PaymentResource extends Resource
                 ->searchable()
                 ->sortable(),
 
-                TextColumn::make('is_paid')
-                ->label ('Estado de pago')
-                    ->color(function (string $state) {
-                        
-                        switch ($state) {
-                            case 'pago':
-                                return 'success';
-                            case 'pendiente':
-                                return 'danger';
-                        }
-                    })
+                TextColumn::make('total_amount')
+                ->prefix('ARS $')
+                    
             ])->defaultSort('student.last_name', 'asc')
             ->filters([
                 Filter::make('pago pendiente')
                     ->query(fn (Builder $query) => $query->where('payment_date_paid', null))
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

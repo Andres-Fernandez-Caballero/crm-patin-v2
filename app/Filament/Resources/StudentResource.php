@@ -17,9 +17,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Set;
 use Filament\Forms\Get;
+use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Log;
 
 use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\TestRunner\TestResult\Collector;
 
 class StudentResource extends Resource
 {
@@ -79,20 +82,15 @@ class StudentResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('state')
+                Tables\Columns\SelectColumn::make('state')
                     ->label('Estado de pago')
-                    ->badge()
-                    ->searchable()
-                    ->color(function (string $state) {
-                        switch ($state) {
-                            case 'regular':
-                                return 'success';
-                            case 'pago pendiente':
-                                return 'danger';
-                        }
-                        return 'warning';
-                    }),
-
+                    ->options([
+                        'regular'=> 'regular',
+                        'pago pendiente' => 'pago pendiente',
+                        'inactivo' => 'inactivo',
+                        ])
+                    ->searchable(),
+                    
 
                 Tables\Columns\TextColumn::make('topics.name')
                     ->badge()
@@ -119,7 +117,7 @@ class StudentResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('form')
                     ->label('Nuevo Pago')
-
+                    ->hidden(fn(Student $student) => $student->state != 'pago pendiente')
                     ->form([
 
                         Fieldset::make('Facturacion')
@@ -157,6 +155,7 @@ class StudentResource extends Resource
 
                                 Forms\Components\DatePicker::make('payment_date_paid')
                                     ->label('Fecha de cobro')
+                                    ->required()
 
                             ])
 
@@ -169,6 +168,7 @@ class StudentResource extends Resource
                             'payment_date_open' => $data['payment_date_open'],
                             'student_id' => $student->id
                         ]);
+                        $student->update(['state' => 'regular']);
                     }),
 
                 Tables\Actions\EditAction::make()
@@ -178,7 +178,11 @@ class StudentResource extends Resource
                     ->modalHeading('Detalle de alumno'),
             ])
             ->bulkActions([
+                
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('setInactive')
+                    ->label('poner inactivos')
+                    ->action(fn(Collection $students)=> $students->each(fn(Student $student) => $student->update(['state' => 'inactivo']))),
                     Tables\Actions\DeleteBulkAction::make()
                         ->label('Eliminar patinador') // Cambiar la etiqueta de la acción de eliminación
                         ->successNotificationTitle('Usuario eliminado correctamente')
