@@ -152,8 +152,7 @@ class StudentResource extends Resource
                         FieldSet::make('Fecha')
                             ->schema([
                                 Forms\Components\DatePicker::make('payment_date_open')
-                                    ->label('Mes abonado')
-                                    ->default(Carbon::now()->toISOString()),
+                                    ->label('Mes abonado')                                    ->default(Carbon::now()->toISOString()),
 
                                 Forms\Components\DatePicker::make('payment_date_paid')
                                     ->label('Fecha de cobro')

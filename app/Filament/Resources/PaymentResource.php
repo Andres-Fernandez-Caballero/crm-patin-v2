@@ -110,10 +110,22 @@ class PaymentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()
+                ->label('Eliminar cuota') // Cambiar la etiqueta de la acción de eliminación
+                        ->successNotificationTitle('Cuota eliminado correctamente')
+                        ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+                        ->modalHeading('Eliminar cuota')
+                        ->modalCancelActionLabel('Cancelar')
+                        ->modalSubmitActionLabel('Si, eliminar')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->label('Eliminar cuota') // Cambiar la etiqueta de la acción de eliminación
+                        ->successNotificationTitle('Cuota eliminado correctamente')
+                        ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+                        ->modalHeading('Eliminar cuota')
+                        ->modalCancelActionLabel('Cancelar')
+                        ->modalSubmitActionLabel('Si, eliminar')
                 ]),
             ]);
     }
