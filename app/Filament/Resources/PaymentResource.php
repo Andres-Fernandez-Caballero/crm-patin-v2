@@ -28,7 +28,7 @@ class PaymentResource extends Resource
 
     protected static ?string $label = 'Cuotas';
 
-    protected static ?string $navigationGroup = 'Facturacion';
+    protected static ?string $navigationGroup = 'Facturación';
 
     public static function formCreatePayment(): array
     {
@@ -91,6 +91,7 @@ class PaymentResource extends Resource
                 ->sortable(),
 
                 TextColumn::make('total_amount')
+                ->label ('Monto abonado')
                 ->prefix('ARS $'),
 
 
@@ -98,15 +99,16 @@ class PaymentResource extends Resource
                     ->label('Mes abonado.')
                     ->dateTime('m-Y')
                     ->searchable()
-                    ->sortable()
+                    ->sortable(),
+
                     
                     
-            ])->defaultSort('student.last_name', 'asc')
+            ])->defaultSort('payment_date_open', 'asc')
 
             
             ->filters([
-                Filter::make('pago pendiente')
-                    ->query(fn (Builder $query) => $query->where('payment_date_paid', null))
+            //    Filter::make('pago pendiente')
+              //      ->query(fn (Builder $query) => $query->where('payment_date_paid', null))
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()

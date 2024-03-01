@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class DisciplinesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Cantidad de alumnos registrados por mes.';
 
     protected function getData(): array
     {

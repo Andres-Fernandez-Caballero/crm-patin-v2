@@ -142,8 +142,22 @@ class StudentResource extends Resource
                                     ->label('Pago vencido')
                                     ->afterStateUpdated(
                                         fn (Get $get, SET $set, $state) =>
-                                        $state ? $set('total_amount', $get('total_amount') * 1.15)
-                                            : $set('total_amount', $get('total_amount') / 1.15)
+                                        $state ? $set('total_amount', $get('total_amount') * 1.1)
+                                            : $set('total_amount', $get('total_amount') / 1.1)
+                                    )
+                                    ->inline(false)
+                                    ->live(onBlur: true),
+
+                                Forms\Components\Toggle::make('month_expirated')
+                                    ->onIcon('heroicon-m-currency-dollar')
+                                    ->offIcon('heroicon-m-currency-dollar')
+                                    ->onColor('success')
+                                    ->offColor('danger')
+                                    ->label('Mes vencido')
+                                    ->afterStateUpdated(
+                                        fn (Get $get, SET $set, $state) =>
+                                        $state ? $set('total_amount', $get('total_amount') * 1.2)
+                                            : $set('total_amount', $get('total_amount') / 1.2)
                                     )
                                     ->inline(false)
                                     ->live(onBlur: true),
@@ -152,7 +166,7 @@ class StudentResource extends Resource
                         FieldSet::make('Fecha')
                             ->schema([
                                 Forms\Components\DatePicker::make('payment_date_open')
-                                    ->label('Mes abonado')                                    ->default(Carbon::now()->toISOString()),
+                                    ->label('Mes abonado')->default(Carbon::now()->toISOString()),
 
                                 Forms\Components\DatePicker::make('payment_date_paid')
                                     ->label('Fecha de cobro')
@@ -182,9 +196,9 @@ class StudentResource extends Resource
 
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('setInactive')
+                        ->icon('heroicon-o-arrow-path')
                         ->label('Establecer pagos pendientes')
                         ->color('warning')
-                        
                         ->action(
                             fn (Collection $students) => $students->where('state', '!=', 'inactivo')->each(fn (Student $student) => $student->update(['state' => 'pago pendiente']))
                         ),

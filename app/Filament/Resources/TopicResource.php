@@ -45,8 +45,7 @@ class TopicResource extends Resource
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('students_count')->counts('students')
-            ->label('Cantidad de alumnos')
-            ,
+            ->label('Cantidad de alumnos'),
             
             
             Tables\Columns\TextColumn::make('price')
