@@ -35,8 +35,6 @@ class StudentResource extends Resource
 
     protected static ?string $label = 'Alumnos';
 
-
-
     public static function form(Form $form): Form
     {
 
@@ -65,7 +63,6 @@ class StudentResource extends Resource
 
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -97,12 +94,6 @@ class StudentResource extends Resource
                     ->badge()
                     ->label('Disciplinas')
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('email')
-                //   ->label('Email')
-                // ->sortable(),
-                //Tables\Columns\TextColumn::make('birth_date')
-                //  ->label('Fecha de nacimiento')  
-                //->sortable(),
             ])->defaultSort('last_name', 'asc')
 
             ->filters([
@@ -112,7 +103,13 @@ class StudentResource extends Resource
                     ->toggle()
                     ->default()
                     ->default(true)
-                    ->query(fn (Builder $query) => $query->where('state', 'pago pendiente'))
+                    ->query(fn (Builder $query) => $query->where('state', 'pago pendiente')),
+                //Mostrar los estudiantes inactivos
+                Filter::make('state')
+                    ->label('Mostrar Inactivos')
+                    ->checkbox()
+                    ->default(false)
+                    ->query(fn (Builder $query) => $query->where('state', 'inactivo')),
 
             ])
             ->actions([
@@ -127,7 +124,6 @@ class StudentResource extends Resource
                                 Forms\Components\TextInput::make('total_amount')
                                     ->numeric()
                                     ->label('Monto a pagar')
-                                    //->afterStateUpdated(fn(GET $get, Set $set, ?string $old) => $get('is_expired')? $set('total_amount', $get('total_amount')* 1.5 ): $set('total_amount', $old) )
                                     ->prefix('ARS$')
                                     ->default(
                                         fn (Student $student) =>
