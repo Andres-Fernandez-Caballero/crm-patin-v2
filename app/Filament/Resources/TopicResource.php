@@ -58,7 +58,14 @@ class TopicResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Editar') // Cambiar el texto de la acción de edición
+                ->label('Editar'), // Cambiar el texto de la acción de edición
+                Tables\Actions\DeleteAction::make()
+                ->label('Eliminar disciplina') // Cambiar la etiqueta de la acción de eliminación
+                        ->successNotificationTitle('Disciplina eliminada correctamente')
+                        ->modalDescription('¿Estás segura? Esta acción es irreversible.')
+                        ->modalHeading('Eliminar disciplina')
+                        ->modalCancelActionLabel('Cancelar')
+                        ->modalSubmitActionLabel('Si, eliminar')
                 
             ])
             ->bulkActions([
