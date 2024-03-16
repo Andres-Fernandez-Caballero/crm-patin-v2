@@ -17,9 +17,7 @@ class MonthlyDetailWidget extends BaseWidget
             Stat::make(
                 
                 label: 'Dinero recaudado este mes ',
-                value: Payment::whereMonth('payment_date_open', Carbon::now())
-
-                ->sum('total_amount')
+                value: Payment::whereMonth('payment_date_open', Carbon::now())->sum('total_amount')
             ),
 
 
