@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Models\Payment;
 use App\Models\Student;
@@ -120,6 +121,9 @@ class PaymentResource extends Resource
                         ->modalSubmitActionLabel('Si, eliminar')
             ])
             ->bulkActions([
+
+                ExportBulkAction::make(),
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                     ->label('Eliminar cuota') // Cambiar la etiqueta de la acción de eliminación

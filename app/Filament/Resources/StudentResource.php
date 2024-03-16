@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Payment;
@@ -191,6 +192,9 @@ class StudentResource extends Resource
             ->bulkActions([
 
                 Tables\Actions\BulkActionGroup::make([
+
+                    ExportBulkAction::make(),
+
                     BulkAction::make('setInactive')
                         ->icon('heroicon-o-arrow-path')
                         ->label('Establecer pagos pendientes')
