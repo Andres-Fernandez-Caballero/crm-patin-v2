@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Navigation\MenuItem;
 use App\Filament\Widgets\MonthlyDetailWidget;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
@@ -47,6 +48,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Green,
+            ])
+
+            ->userMenuItems([
+                'logout' => MenuItem::make()->label('Cerrar sesión'),
+                
             ])
             ->font ('roboto')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

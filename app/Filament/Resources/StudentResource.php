@@ -55,6 +55,7 @@ class StudentResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('topics')
                     ->label('Disciplinas')
+                    ->native(false)
                     ->preload()
                     ->multiple()
                     ->relationship('topics', 'name'),
@@ -83,6 +84,7 @@ class StudentResource extends Resource
 
                 Tables\Columns\SelectColumn::make('state')
                     ->label('Estado de pago')
+                    ->selectablePlaceholder(false)
                     ->options([
                         'regular' => 'regular',
                         'pago pendiente' => 'pago pendiente',
@@ -101,7 +103,7 @@ class StudentResource extends Resource
                 // get students by current month
                 Filter::make('payment_date_paid')
                     ->label('Pagos pendientes')
-                    ->toggle()
+                    ->checkbox()
                     ->default()
                     ->default(true)
                     ->query(fn (Builder $query) => $query->where('state', 'pago pendiente')),
@@ -190,10 +192,12 @@ class StudentResource extends Resource
                     ->modalHeading('Detalle de alumno'),
             ])
             ->bulkActions([
+                ExportBulkAction::make()
+                ->label('Exportar excel'),
 
                 Tables\Actions\BulkActionGroup::make([
 
-                    ExportBulkAction::make(),
+                    
 
                     BulkAction::make('setInactive')
                         ->icon('heroicon-o-arrow-path')
