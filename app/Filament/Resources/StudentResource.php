@@ -194,7 +194,7 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 ExportBulkAction::make()
-                ->label('Exportar a excel'),
+                ->label('Exportar a excel.'),
 
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('setInactive')

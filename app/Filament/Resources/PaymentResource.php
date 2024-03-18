@@ -79,7 +79,7 @@ class PaymentResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->paginated(false)
             ->columns([
                 TextColumn::make('student.last_name')
                 ->label ('Apellido')
@@ -122,7 +122,8 @@ class PaymentResource extends Resource
             ])
             ->bulkActions([
 
-                ExportBulkAction::make(),
+                ExportBulkAction::make()
+                ->label('Exportar a excel.'),
 
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
