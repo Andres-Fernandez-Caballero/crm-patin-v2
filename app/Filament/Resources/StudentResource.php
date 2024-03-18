@@ -194,12 +194,9 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 ExportBulkAction::make()
-                ->label('Exportar excel'),
+                ->label('Exportar a excel'),
 
                 Tables\Actions\BulkActionGroup::make([
-
-                    
-
                     BulkAction::make('setInactive')
                         ->icon('heroicon-o-arrow-path')
                         ->label('Establecer pagos pendientes')
