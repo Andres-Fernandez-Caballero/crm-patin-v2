@@ -67,7 +67,8 @@ class StudentResource extends Resource
     }
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->paginated(false)
+            
             ->columns([
                 Tables\Columns\TextColumn::make('last_name')
                     ->label('Apellidos')
