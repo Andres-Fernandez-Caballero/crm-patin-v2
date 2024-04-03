@@ -16,12 +16,6 @@ class CreateStudent extends CreateRecord
         return 'Estudiante creado correctamente';
     }
 
-
-
-
-
-
-
     protected function getRedirectUrl(): string
 {
     
