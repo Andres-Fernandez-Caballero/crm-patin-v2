@@ -53,6 +53,8 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->required(),
+                Forms\Components\TextInput::make('meses_adeudados')
+                    ->label('Meses que debe el estudiante'),
                 Forms\Components\Select::make('topics')
                     ->label('Disciplinas')
                     ->native(false)
@@ -90,6 +92,7 @@ class StudentResource extends Resource
                         'regular' => 'regular',
                         'pago pendiente' => 'pago pendiente',
                         'inactivo' => 'inactivo',
+                        'deudor' => 'deudor',
                     ])
                     ->searchable(),
 
@@ -98,6 +101,8 @@ class StudentResource extends Resource
                     ->badge()
                     ->label('Disciplinas')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('meses_adeudados')
+                    ->label('Adeuda'),
             ])->defaultSort('last_name', 'asc')
 
             ->filters([
@@ -114,6 +119,12 @@ class StudentResource extends Resource
                     ->checkbox()
                     ->default(false)
                     ->query(fn (Builder $query) => $query->where('state', 'inactivo')),
+                //Mostrar los estudiantes deudores
+                Filter::make('meses_adeudados')
+                    ->label('Mostrar Deudores')
+                    ->checkbox()
+                    ->default(false)
+                    ->query(fn (Builder $query) => $query->where('state', 'deudor')),
 
             ])
             ->actions([
