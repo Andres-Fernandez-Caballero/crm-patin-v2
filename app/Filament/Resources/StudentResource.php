@@ -93,6 +93,7 @@ class StudentResource extends Resource
                         'pago pendiente' => 'pago pendiente',
                         'inactivo' => 'inactivo',
                         'deudor' => 'deudor',
+                        
                     ])
                     ->searchable(),
 
